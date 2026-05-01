@@ -1,19 +1,23 @@
-Actúa como un desarrollador Frontend Senior experto en React, Vite y Tailwind CSS. Estoy migrando un e-commerce desde WordPress. En esta carpeta tienes un directorio llamado 'assets_temporales' con la información de mi marca (brand.txt), mi catálogo (productos.csv) y algunas imágenes.
+Actúa como un desarrollador Frontend Senior experto en React, Vite y Tailwind CSS. Estoy migrando el e-commerce de la academia 'Viana Nails' desde WordPress. En esta carpeta tienes un directorio llamado 'assets_temporales' con el manual de marca (brandinform.docx), mi catálogo (productos.csv) y varias imágenes.
 
-Tu objetivo es inicializar el proyecto base y dejarlo listo para producción. Ejecuta los comandos necesarios y sigue estos pasos:
+Tu objetivo es inicializar el proyecto base y maquetarlo siguiendo estrictamente las directrices de nuestra identidad corporativa. Ejecuta los comandos necesarios y sigue estos pasos:
 
-Inicialización: Crea aquí mismo un proyecto de React usando Vite (npm create vite@latest . -- --template react) e instala Tailwind CSS junto con sus dependencias.
+Análisis de Marca: Lee detenidamente el archivo brandinform.docx. Analiza nuestra paleta de colores corporativos, nuestro sistema tipográfico (fuentes principales y secundarias) y la personalidad/voz de la marca. Deberás aplicar este estilo visual a toda la maquetación.
 
-Configuración de Diseño: Lee el archivo assets_temporales/brand.txt y modifica el tailwind.config.js para añadir mis colores corporativos y tipografías como variables nativas de Tailwind.
+Limpieza de Assets: Revisa la carpeta 'assets_temporales'. Elimina todos los archivos del logotipo que estén en formato .png o .jpg. Quédate única y exclusivamente con el archivo vectorial logoViana.svg para asegurar la máxima calidad. En cuanto al resto de fotos elimina las que consideres que no se van a usar o que no sirven.
 
-Migración de Assets: Mueve el logo.png y las fotos de la carpeta imagenes a la carpeta public/ o src/assets/ del nuevo proyecto.
+Inicialización: Crea aquí mismo un proyecto de React usando Vite (npm create vite@latest . -- --template react) e instala Tailwind CSS y sus dependencias.
 
-Maquetación Estructural: Crea una carpeta src/components. Crea un Layout.jsx que incluya un Navbar (con el logo importado y un icono de carrito) y un Footer profesional.
+Configuración de Diseño Tailwind: Configura el archivo tailwind.config.js inyectando como variables nativas los colores hexadecimales y las tipografías exactas que has extraído de la lectura del brandinform.docx.
 
-Catálogo: Lee el archivo assets_temporales/productos.csv. No necesito que montes una base de datos real ahora, pero quiero que extraigas la información de 4 o 6 productos principales y crees un archivo src/data/mockProducts.js con esos datos (título, precio, descripción corta, ruta de imagen).
+Migración de Assets: Mueve el logoViana.svg y las fotos de productos a la carpeta public/ o src/assets/ del nuevo proyecto.
 
-Vista Principal: Crea una Home.jsx con una sección 'Hero' llamativa y un 'ProductGrid' que renderice tarjetas de producto (ProductCard.jsx) usando los datos del paso anterior.
+Maquetación Estructural: Crea una carpeta src/components. Desarrolla un Layout.jsx que incluya un Navbar (utilizando el logoViana.svg y un icono de carrito) y un Footer. Utiliza los colores y formas que transmitan el estilo orgánico, cálido y profesional descrito en el manual de marca.
 
-Limpieza: Integra todo en App.jsx, asegúrate de que no haya errores de importación y comprueba que todo compila correctamente.
+Catálogo: Lee el archivo assets_temporales/productos.csv. Extrae la información de 4 o 6 productos principales y crea un archivo src/data/mockProducts.js con esos datos (título, precio, descripción, ruta de imagen).
 
-Trabaja paso a paso, leyendo los archivos cuando lo necesites, y avísame cuando esté listo para que yo pueda ejecutar npm run dev y ver mi nueva web.
+Vista Principal: Crea una Home.jsx con una sección 'Hero' que refleje el tono motivador de Viana Nails, y un 'ProductGrid' que renderice tarjetas de producto (ProductCard.jsx) usando los datos del paso anterior.
+
+Preparación para Checkout: Crea un componente CartModal.jsx (carrito lateral) y una página estática Checkout.jsx con un formulario maquetado en Tailwind y un botón de 'Pagar con Tarjeta'. Añade el comentario // TODO: Integrate Stripe Checkout here en la función de pago.
+
+Trabaja paso a paso, verifica que el proyecto compila sin errores y avísame cuando esté listo para que yo pueda ejecutar npm run dev.
