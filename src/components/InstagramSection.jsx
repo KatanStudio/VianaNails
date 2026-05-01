@@ -102,14 +102,7 @@ export default function InstagramSection() {
             </svg>
             Síguenos en Instagram
           </a>
-          <a
-            href={IG_PROFILE}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-outline text-center"
-          >
-            Ver más
-          </a>
+         
         </div>
       </div>
     </section>

@@ -46,7 +46,15 @@ export default function SearchOverlay({ isOpen, onClose, onNavigate }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[60] bg-white/96 backdrop-blur-sm flex flex-col">
+    <div className="fixed inset-0 z-[60]" onClick={onClose}>
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/40" />
+
+      {/* Panel */}
+      <div
+        className="absolute top-[60px] left-0 right-0 bg-white shadow-xl flex flex-col max-h-[70vh]"
+        onClick={e => e.stopPropagation()}
+      >
       {/* Search bar */}
       <div className="flex items-center gap-3 px-4 sm:px-8 py-5 border-b border-gray-100 max-w-3xl mx-auto w-full">
         <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -150,6 +158,7 @@ export default function SearchOverlay({ isOpen, onClose, onNavigate }) {
             </ul>
           </div>
         )}
+      </div>
       </div>
     </div>
   )
