@@ -77,6 +77,7 @@ export default function App() {
         onRemove={removeFromCart}
         onUpdateQty={updateQty}
         onCheckout={() => { setCartOpen(false); navigate('checkout') }}
+        onNavigate={navigate}
         currency={currency}
       />
     </>

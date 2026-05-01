@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { formatPrice } from '../utils/currency'
 
-export default function CartModal({ isOpen, onClose, items, onRemove, onUpdateQty, onCheckout, currency = 'EUR' }) {
+export default function CartModal({ isOpen, onClose, items, onRemove, onUpdateQty, onCheckout, currency = 'EUR', onNavigate }) {
   // Prevent body scroll when open
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
@@ -53,7 +53,7 @@ export default function CartModal({ isOpen, onClose, items, onRemove, onUpdateQt
                 <p className="font-body font-semibold text-viana-dark">Tu carrito está vacío</p>
                 <p className="text-sm text-gray-400 mt-1">Añade un curso para comenzar</p>
               </div>
-              <button onClick={onClose} className="btn-primary text-sm">Explorar Servicios</button>
+              <button onClick={() => { onClose(); onNavigate?.('cursos') }} className="btn-primary text-sm">Explorar Servicios</button>
             </div>
           ) : (
             <ul className="divide-y divide-gray-100">

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const BANNER = 'https://viananails.com/wp-content/uploads/2023/06/IMG_4833-1.jpeg'
 
@@ -25,13 +25,14 @@ const GALLERY_IMAGES = [
   { url: `${BASE_23_06}/2023-06-05-7.jpg`, alt: 'Trabajo alumna' },
 ]
 
-function GalleryImage({ url, alt }) {
+function GalleryImage({ url, alt, index, onOpen }) {
   const [error, setError] = useState(false)
-
   if (error) return null
-
   return (
-    <div className="break-inside-avoid mb-4 rounded-xl overflow-hidden shadow-md group cursor-zoom-in">
+    <div
+      className="break-inside-avoid mb-4 rounded-xl overflow-hidden shadow-md group cursor-zoom-in"
+      onClick={() => onOpen(index)}
+    >
       <img
         src={url}
         alt={alt}
@@ -43,7 +44,101 @@ function GalleryImage({ url, alt }) {
   )
 }
 
+function Lightbox({ index, onClose, onPrev, onNext }) {
+  const img = GALLERY_IMAGES[index]
+  const [imgError, setImgError] = useState(false)
+
+  // Reset error state when image changes
+  useEffect(() => { setImgError(false) }, [index])
+
+  return (
+    <div
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-black/90"
+      onClick={onClose}
+    >
+      {/* Counter */}
+      <div className="absolute top-5 left-1/2 -translate-x-1/2 font-body text-white/60 text-sm select-none">
+        {index + 1} / {GALLERY_IMAGES.length}
+      </div>
+
+      {/* Close */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+        aria-label="Cerrar"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      {/* Prev */}
+      <button
+        onClick={e => { e.stopPropagation(); onPrev() }}
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/25 text-white transition-colors"
+        aria-label="Anterior"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+
+      {/* Image */}
+      <div
+        className="relative max-w-[90vw] max-h-[85vh] flex items-center justify-center"
+        onClick={e => e.stopPropagation()}
+      >
+        {imgError ? (
+          <div className="w-64 h-64 flex items-center justify-center text-white/40 font-body text-sm">
+            Imagen no disponible
+          </div>
+        ) : (
+          <img
+            src={img.url}
+            alt={img.alt}
+            className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg shadow-2xl"
+            onError={() => setImgError(true)}
+          />
+        )}
+      </div>
+
+      {/* Next */}
+      <button
+        onClick={e => { e.stopPropagation(); onNext() }}
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/25 text-white transition-colors"
+        aria-label="Siguiente"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+    </div>
+  )
+}
+
 export default function Galeria({ onNavigate }) {
+  const [lightbox, setLightbox] = useState(null)
+
+  const closeLightbox = useCallback(() => setLightbox(null), [])
+  const prev = useCallback(() => setLightbox(i => (i - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length), [])
+  const next = useCallback(() => setLightbox(i => (i + 1) % GALLERY_IMAGES.length), [])
+
+  useEffect(() => {
+    if (lightbox === null) return
+    function onKey(e) {
+      if (e.key === 'Escape')      closeLightbox()
+      if (e.key === 'ArrowLeft')   prev()
+      if (e.key === 'ArrowRight')  next()
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [lightbox, closeLightbox, prev, next])
+
+  useEffect(() => {
+    document.body.style.overflow = lightbox !== null ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [lightbox])
+
   return (
     <>
       {/* Page Header */}
@@ -74,7 +169,7 @@ export default function Galeria({ onNavigate }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
             {GALLERY_IMAGES.map((img, i) => (
-              <GalleryImage key={i} url={img.url} alt={img.alt} />
+              <GalleryImage key={i} url={img.url} alt={img.alt} index={i} onOpen={setLightbox} />
             ))}
           </div>
         </div>
@@ -95,6 +190,11 @@ export default function Galeria({ onNavigate }) {
           </button>
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox !== null && (
+        <Lightbox index={lightbox} onClose={closeLightbox} onPrev={prev} onNext={next} />
+      )}
     </>
   )
 }
