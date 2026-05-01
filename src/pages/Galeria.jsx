@@ -91,7 +91,7 @@ export default function Galeria({ onNavigate }) {
             Contactar
           </button>
           <button onClick={() => onNavigate('cursos')} className="btn-outline">
-            Ver Cursos
+            Ver Servicios
           </button>
         </div>
       </div>

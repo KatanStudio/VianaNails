@@ -57,7 +57,7 @@ export default function Checkout({ cartItems, onNavigate }) {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
           </svg>
-          Volver a los cursos
+          Volver a los servicios
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -178,7 +178,7 @@ export default function Checkout({ cartItems, onNavigate }) {
               <h3 className="font-display text-xl text-viana-dark mb-4">Resumen del pedido</h3>
 
               {cartItems.length === 0 ? (
-                <p className="text-sm font-body text-gray-400">No hay cursos en el carrito.</p>
+                <p className="text-sm font-body text-gray-400">No hay servicios en el carrito.</p>
               ) : (
                 <ul className="divide-y divide-gray-100 mb-6">
                   {cartItems.map(item => (

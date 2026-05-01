@@ -4,7 +4,7 @@ import mockProducts from '../data/mockProducts'
 
 const FILTERS = ['Todos', 'Presencial', 'Online']
 
-export default function ProductGrid({ onAddToCart }) {
+export default function ProductGrid({ onAddToCart, currency = 'EUR' }) {
   const [filter, setFilter] = useState('Todos')
 
   const visible = filter === 'Todos'
@@ -17,7 +17,7 @@ export default function ProductGrid({ onAddToCart }) {
         {/* Section header */}
         <div className="text-center mb-12">
           <span className="text-viana-pink font-body font-medium text-sm uppercase tracking-widest">Formación profesional</span>
-          <h2 className="font-display text-4xl sm:text-5xl text-viana-dark mt-2 mb-4">Nuestros Cursos</h2>
+          <h2 className="font-display text-4xl sm:text-5xl text-viana-dark mt-2 mb-4">Nuestros Servicios</h2>
           <p className="font-body text-gray-500 max-w-xl mx-auto text-base">
             Aprende con profesionales, en grupos reducidos y con todos los materiales incluidos. Tu futuro empieza aquí.
           </p>
@@ -43,7 +43,7 @@ export default function ProductGrid({ onAddToCart }) {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {visible.map(product => (
-            <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />
+            <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} currency={currency} />
           ))}
         </div>
 

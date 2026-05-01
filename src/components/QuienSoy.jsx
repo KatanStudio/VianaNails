@@ -16,21 +16,27 @@ export default function QuienSoy({ onNavigate }) {
           {/* Text */}
           <div className="order-2 lg:order-1 space-y-5 font-body text-gray-600 leading-relaxed">
             <p>
-              Hola, soy <strong className="text-viana-dark">Trinidad Viana</strong>, fundadora de Viana Nails.
-              Nuestra academia nació de mi hobby y mi pasión por las uñas, con la ilusión de compartir todo lo
-              aprendido con personas que, como yo, sueñan con dedicarse a este maravilloso mundo.
+              Mi nombre es <strong className="text-viana-dark">Trinidad Viana</strong>, fundadora de la academia Viananails.
+              A continuación, dejo un resumen de cómo y cuándo nace este proyecto.
             </p>
             <p>
-              En Viana Nails nos implicamos con cada alumna porque hemos estado en su lugar. Sabemos lo que es
-              empezar desde cero, sin experiencia, y convertirlo en una profesión que llena de satisfacción.
+              Viananails nace por hobby y pasión por las uñas, después de mucho tiempo compaginando este arte con un trabajo aparte,
+              tomamos la decisión de cumplir un sueño y luchar por él. Comenzamos este maravilloso camino hace unos años
+              y hoy día es nuestra forma de vida.
             </p>
             <p>
-              Nuestro sello de identidad es la <strong className="text-viana-dark">humildad y la transparencia</strong> en
-              cada paso que damos. Trabajamos con grupos reducidos, productos de alta calidad y una formación continua
-              para estar siempre a la vanguardia.
+              En este proyecto todas las formadoras estamos en continuo aprendizaje y así poder enseñar todas y cada una de las
+              nuevas técnicas que van surgiendo. Aquí encontramos personal que, ante todo, os transmiten armonía, profesionalidad
+              y garantía de que todas las técnicas adquiridas las aprenderás de la mejor forma posible.
             </p>
             <p>
-              Si sueñas con emprender en el mundo de las uñas, este es tu sitio. Te esperamos con los brazos abiertos.
+              Nos gusta involucrarnos con cada una de nuestras alumnas, ya que nosotros en algún momento hemos sido o seguimos
+              siendo alumnas. Nuestro sello de identidad es la <strong className="text-viana-dark">humildad y transparencia</strong> en
+              cada paso que damos.
+            </p>
+            <p>
+              Si, al igual que yo, deseas emprender en el magnífico mundo de las uñas, estaremos encantados de caminar a tu lado
+              y poder ayudarte cada día a conseguirlo. <strong className="text-viana-dark">¡Confía en ti y lucha por tus sueños!</strong>
             </p>
 
             <div className="pt-4">

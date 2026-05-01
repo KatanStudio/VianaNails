@@ -2,9 +2,18 @@ import { useState, useEffect, useRef } from 'react'
 import logo from '../assets/logoViana.svg'
 import SearchOverlay from './SearchOverlay'
 
+const CURRENCIES = [
+  { code: 'EUR', label: 'Euro',                       symbol: '€' },
+  { code: 'MXN', label: 'Peso Mexicano',              symbol: '$' },
+  { code: 'ARS', label: 'Peso Argentino',             symbol: '$' },
+  { code: 'COP', label: 'Peso Colombiano',            symbol: '$' },
+  { code: 'CLP', label: 'Peso Chileno',               symbol: '$' },
+  { code: 'USD', label: 'Dólar de los Estados Unidos', symbol: '$' },
+]
+
 const NAV_LINKS = [
   { label: 'Inicio',   page: 'home' },
-  { label: 'Cursos',   page: 'cursos' },
+  { label: 'Servicios', page: 'cursos' },
   { label: 'Galería',  page: 'galeria' },
   { label: 'Contacto', page: 'contacto' },
 ]
@@ -28,12 +37,12 @@ function FbIcon() {
   )
 }
 
-export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage }) {
-  const [scrolled, setScrolled]     = useState(false)
-  const [menuOpen, setMenuOpen]     = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [userOpen, setUserOpen]     = useState(false)
-  const userMenuRef = useRef(null)
+export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage, currency = 'EUR', onCurrencyChange }) {
+  const [scrolled, setScrolled]         = useState(false)
+  const [menuOpen, setMenuOpen]         = useState(false)
+  const [searchOpen, setSearchOpen]     = useState(false)
+  const [currencyOpen, setCurrencyOpen] = useState(false)
+  const currencyMenuRef = useRef(null)
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20)
@@ -41,21 +50,20 @@ export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage 
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
-  // Close user dropdown on outside click
+  // Close currency dropdown on outside click
   useEffect(() => {
-    if (!userOpen) return
+    if (!currencyOpen) return
     function handleOutside(e) {
-      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
-        setUserOpen(false)
+      if (currencyMenuRef.current && !currencyMenuRef.current.contains(e.target)) {
+        setCurrencyOpen(false)
       }
     }
     document.addEventListener('mousedown', handleOutside)
     return () => document.removeEventListener('mousedown', handleOutside)
-  }, [userOpen])
+  }, [currencyOpen])
 
   function handleNav(page) {
     setMenuOpen(false)
-    setUserOpen(false)
     onNavigate(page)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -130,47 +138,54 @@ export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage 
               </svg>
             </button>
 
-            {/* User dropdown */}
-            <div className="relative" ref={userMenuRef}>
+            {/* Currency switcher */}
+            <div className="relative" ref={currencyMenuRef}>
               <button
-                onClick={() => setUserOpen(o => !o)}
-                className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors ${
-                  userOpen ? 'bg-viana-cream text-viana-pink' : 'text-gray-500 hover:text-viana-pink hover:bg-viana-cream'
+                onClick={() => setCurrencyOpen(o => !o)}
+                className={`h-9 px-2 flex items-center gap-1 rounded-full text-xs font-semibold transition-colors ${
+                  currencyOpen ? 'bg-viana-cream text-viana-pink' : 'text-gray-500 hover:text-viana-pink hover:bg-viana-cream'
                 }`}
-                aria-label="Cuenta"
-                aria-expanded={userOpen}
+                aria-label="Cambiar divisa"
+                aria-expanded={currencyOpen}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                {currency}
+                <svg className="w-3 h-3 opacity-60" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
               </button>
 
-              {userOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden">
-                  <a
-                    href="https://viananails.com/mi-cuenta/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setUserOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm font-body text-gray-700 hover:bg-viana-cream hover:text-viana-pink transition-colors"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                    </svg>
-                    Iniciar sesión
-                  </a>
-                  <button
-                    onClick={() => { setUserOpen(false); handleNav('registro') }}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-body text-gray-700 hover:bg-viana-cream hover:text-viana-pink transition-colors"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                    </svg>
-                    Registrarse
-                  </button>
+              {currencyOpen && (
+                <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden">
+                  {CURRENCIES.map(c => (
+                    <button
+                      key={c.code}
+                      onClick={() => { onCurrencyChange?.(c.code); setCurrencyOpen(false) }}
+                      className={`w-full flex items-center justify-between px-4 py-2.5 text-sm font-body transition-colors ${
+                        c.code === currency
+                          ? 'bg-viana-cream text-viana-pink font-semibold'
+                          : 'text-gray-700 hover:bg-viana-cream hover:text-viana-pink'
+                      }`}
+                    >
+                      <span className="font-semibold">{c.code}</span>
+                      <span className="text-xs text-gray-400">{c.label}</span>
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
+
+            {/* User — navigate to login page */}
+            <button
+              onClick={() => handleNav('login')}
+              className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors ${
+                currentPage === 'login' ? 'bg-viana-cream text-viana-pink' : 'text-gray-500 hover:text-viana-pink hover:bg-viana-cream'
+              }`}
+              aria-label="Iniciar sesión"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+            </button>
 
             {/* Cart */}
             <button
@@ -216,28 +231,46 @@ export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage 
                 {link.label}
               </button>
             ))}
-            <div className="pt-3 space-y-1">
-              <a
-                href="https://viananails.com/mi-cuenta/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 py-2.5 text-sm font-body text-gray-600 hover:text-viana-pink border-b border-gray-50"
+            <div className="pt-3 border-b border-gray-50 pb-3">
+              <button
+                onClick={() => handleNav('login')}
+                className="flex items-center gap-3 py-2 text-sm font-body font-semibold text-viana-dark hover:text-viana-pink transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
                 </svg>
                 Iniciar sesión
-              </a>
-              <button
-                onClick={() => handleNav('registro')}
-                className="w-full flex items-center gap-3 py-2.5 text-sm font-body text-gray-600 hover:text-viana-pink border-b border-gray-50"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                </svg>
-                Registrarse
               </button>
+              <p className="text-xs font-body text-gray-400 mt-1.5">
+                ¿No tienes cuenta?{' '}
+                <button
+                  onClick={() => handleNav('registro')}
+                  className="text-viana-pink hover:underline font-medium"
+                >
+                  Regístrate aquí
+                </button>
+              </p>
             </div>
+            {/* Currency selector (mobile) */}
+            <div className="pt-3 border-t border-gray-50">
+              <p className="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-2">Divisa</p>
+              <div className="grid grid-cols-3 gap-1.5">
+                {CURRENCIES.map(c => (
+                  <button
+                    key={c.code}
+                    onClick={() => { onCurrencyChange?.(c.code); setMenuOpen(false) }}
+                    className={`py-2 rounded-xl text-xs font-semibold transition-colors ${
+                      c.code === currency
+                        ? 'bg-viana-gradient text-white'
+                        : 'bg-gray-50 text-gray-600 hover:bg-viana-cream hover:text-viana-pink'
+                    }`}
+                  >
+                    {c.code}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="flex gap-4 pt-3">
               <a href={IG_URL} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-viana-pink transition-colors"><IgIcon /></a>
               <a href={FB_URL} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-viana-pink transition-colors"><FbIcon /></a>

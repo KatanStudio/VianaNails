@@ -1,10 +1,7 @@
 import { useEffect } from 'react'
+import { formatPrice } from '../utils/currency'
 
-function formatPrice(n) {
-  return n % 1 === 0 ? `${n}€` : `${n.toFixed(2).replace('.', ',')}€`
-}
-
-export default function CartModal({ isOpen, onClose, items, onRemove, onUpdateQty, onCheckout }) {
+export default function CartModal({ isOpen, onClose, items, onRemove, onUpdateQty, onCheckout, currency = 'EUR' }) {
   // Prevent body scroll when open
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
@@ -56,7 +53,7 @@ export default function CartModal({ isOpen, onClose, items, onRemove, onUpdateQt
                 <p className="font-body font-semibold text-viana-dark">Tu carrito está vacío</p>
                 <p className="text-sm text-gray-400 mt-1">Añade un curso para comenzar</p>
               </div>
-              <button onClick={onClose} className="btn-primary text-sm">Explorar Cursos</button>
+              <button onClick={onClose} className="btn-primary text-sm">Explorar Servicios</button>
             </div>
           ) : (
             <ul className="divide-y divide-gray-100">
@@ -88,7 +85,7 @@ export default function CartModal({ isOpen, onClose, items, onRemove, onUpdateQt
                         >+</button>
                       </div>
                       <span className="gradient-text font-bold font-body text-sm">
-                        {formatPrice(item.priceFrom * item.qty)}
+                        {formatPrice(item.priceFrom * item.qty, currency)}
                       </span>
                     </div>
                   </div>
@@ -112,7 +109,7 @@ export default function CartModal({ isOpen, onClose, items, onRemove, onUpdateQt
           <div className="border-t border-gray-100 px-6 py-5 space-y-4">
             <div className="flex items-center justify-between font-body">
               <span className="text-gray-500 text-sm">Subtotal</span>
-              <span className="font-bold text-viana-dark text-lg">{formatPrice(subtotal)}</span>
+              <span className="font-bold text-viana-dark text-lg">{formatPrice(subtotal, currency)}</span>
             </div>
             <button onClick={onCheckout} className="btn-primary w-full text-center">
               Finalizar Reserva

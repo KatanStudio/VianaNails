@@ -43,7 +43,7 @@ export default function Registro({ onNavigate }) {
           <h2 className="font-display text-3xl text-viana-dark mb-3">¡Bienvenida!</h2>
           <p className="font-body text-gray-500 mb-6">Tu cuenta ha sido creada correctamente. Ya puedes acceder a todos nuestros cursos.</p>
           <button onClick={() => onNavigate('academia')} className="btn-primary w-full">
-            Explorar Cursos Online
+            Explorar Servicios Online
           </button>
         </div>
       </div>
@@ -159,9 +159,12 @@ export default function Registro({ onNavigate }) {
 
             <p className="mt-6 text-center font-body text-sm text-gray-500">
               ¿Ya tienes cuenta?{' '}
-              <a href="https://viananails.com/mi-cuenta/" target="_blank" rel="noopener noreferrer" className="text-viana-pink hover:underline font-medium">
+              <button
+                onClick={() => onNavigate('login')}
+                className="text-viana-pink hover:underline font-medium"
+              >
                 Iniciar sesión
-              </a>
+              </button>
             </p>
           </div>
         </div>

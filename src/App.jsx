@@ -5,16 +5,18 @@ import Checkout from './pages/Checkout'
 import Cursos from './pages/Cursos'
 import Galeria from './pages/Galeria'
 import Registro from './pages/Registro'
+import Login from './pages/Login'
 import Contacto from './pages/Contacto'
 import CartModal from './components/CartModal'
 
-const CURSOS_FILTER = { formacion: 'Presencial', academia: 'Online', proximos: 'Próximos Cursos' }
+const CURSOS_FILTER = { formacion: 'Presencial', academia: 'Online', proximos: 'Próximos Servicios' }
 
 export default function App() {
   const [cartItems, setCartItems] = useState([])
   const [cartOpen, setCartOpen] = useState(false)
   const [page, setPage] = useState('home')
   const [cursosFilter, setCursosFilter] = useState('Todos')
+  const [currency, setCurrency] = useState('EUR')
 
   function navigate(p) {
     if (CURSOS_FILTER[p]) {
@@ -56,10 +58,13 @@ export default function App() {
         onCartOpen={() => setCartOpen(true)}
         onNavigate={navigate}
         currentPage={page}
+        currency={currency}
+        onCurrencyChange={setCurrency}
       >
         {page === 'home' && <Home onAddToCart={addToCart} onNavigate={navigate} />}
-        {page === 'cursos' && <Cursos key={cursosFilter} onAddToCart={addToCart} onNavigate={navigate} initialFilter={cursosFilter} />}
+        {page === 'cursos' && <Cursos key={cursosFilter} onAddToCart={addToCart} onNavigate={navigate} initialFilter={cursosFilter} currency={currency} />}
         {page === 'galeria' && <Galeria onNavigate={navigate} />}
+        {page === 'login' && <Login onNavigate={navigate} />}
         {page === 'registro' && <Registro onNavigate={navigate} />}
         {page === 'contacto' && <Contacto onNavigate={navigate} />}
         {page === 'checkout' && <Checkout cartItems={cartItems} onNavigate={navigate} />}
@@ -72,6 +77,7 @@ export default function App() {
         onRemove={removeFromCart}
         onUpdateQty={updateQty}
         onCheckout={() => { setCartOpen(false); navigate('checkout') }}
+        currency={currency}
       />
     </>
   )

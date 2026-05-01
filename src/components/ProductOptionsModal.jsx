@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
+import { formatPrice } from '../utils/currency'
 
-function formatPrice(n) {
-  return n % 1 === 0 ? `${n}€` : `${n.toFixed(2).replace('.', ',')}€`
-}
-
-export default function ProductOptionsModal({ product, isOpen, onClose, onAddToCart }) {
+export default function ProductOptionsModal({ product, isOpen, onClose, onAddToCart, currency = 'EUR' }) {
   const [selTipo, setSelTipo] = useState(null)
   const [selKit, setSelKit] = useState(null)
   const [imgError, setImgError] = useState(false)
@@ -100,7 +97,7 @@ export default function ProductOptionsModal({ product, isOpen, onClose, onAddToC
               <p className="font-body text-xs text-viana-pink font-semibold uppercase tracking-wide mb-1">Presencial</p>
               <h3 className="font-display text-lg text-viana-dark leading-snug">{product.name}</h3>
               <p className="font-body text-xs text-gray-400 mt-0.5">
-                Desde <span className="text-viana-pink font-semibold">{formatPrice(product.priceFrom)}</span>
+                Desde <span className="text-viana-pink font-semibold">{formatPrice(product.priceFrom, currency)}</span>
               </p>
             </div>
           </div>
@@ -183,7 +180,7 @@ export default function ProductOptionsModal({ product, isOpen, onClose, onAddToC
               <span className="font-body text-sm text-gray-500">Total</span>
               {isComplete && selectedVariation ? (
                 <span className="font-display text-2xl gradient-text">
-                  {formatPrice(selectedVariation.price)}
+                  {formatPrice(selectedVariation.price, currency)}
                 </span>
               ) : (
                 <span className="font-body text-sm text-gray-400">

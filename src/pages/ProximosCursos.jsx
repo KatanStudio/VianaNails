@@ -13,7 +13,7 @@ export default function ProximosCursos({ onNavigate }) {
         <div className="absolute inset-0 bg-gradient-to-b from-viana-dark/50 to-viana-dark/80" />
         <div className="relative z-10 pt-36 pb-16 text-center max-w-7xl mx-auto px-4 sm:px-6">
           <p className="font-body text-viana-pink font-medium text-sm uppercase tracking-widest mb-3">Calendario</p>
-          <h1 className="font-display text-5xl sm:text-6xl text-white tracking-wide">Próximos Cursos</h1>
+          <h1 className="font-display text-5xl sm:text-6xl text-white tracking-wide">Próximos Servicios</h1>
           <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-viana-gradient" />
         </div>
       </div>

@@ -6,28 +6,6 @@ export default function Footer({ onNavigate }) {
       {/* Gradient top strip */}
       <div className="h-1 bg-viana-gradient" />
 
-      {/* CTA Banners */}
-      <div className="grid grid-cols-1 sm:grid-cols-2">
-        <button
-          onClick={() => onNavigate('formacion')}
-          className="group relative overflow-hidden flex items-center justify-center py-10 px-8 text-center"
-        >
-          <div className="absolute inset-0 bg-viana-gradient opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-          <span className="relative font-body font-bold text-white text-sm sm:text-base uppercase tracking-widest z-10">
-            CONOCE NUESTRA FORMACIÓN PRESENCIAL
-          </span>
-        </button>
-        <button
-          onClick={() => onNavigate('academia')}
-          className="group relative overflow-hidden flex items-center justify-center py-10 px-8 text-center"
-        >
-          <div className="absolute inset-0 bg-viana-dark group-hover:bg-viana-dark/80 transition-colors duration-300" />
-          <span className="relative font-body font-bold text-white text-sm sm:text-base uppercase tracking-widest z-10">
-            DESCUBRE NUESTRA ACADEMIA ONLINE
-          </span>
-        </button>
-      </div>
-
       {/* Main footer content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Brand */}
@@ -67,7 +45,7 @@ export default function Footer({ onNavigate }) {
           <h4 className="font-body font-semibold text-white mb-4 text-xs uppercase tracking-widest">Navegación</h4>
           <ul className="space-y-2 text-sm text-gray-400">
             {[
-              { label: 'Cursos',          page: 'cursos' },
+              { label: 'Servicios',        page: 'cursos' },
               { label: 'Galería',         page: 'galeria' },
               { label: 'Registro',        page: 'registro' },
               { label: 'Contacto',        page: 'contacto' },

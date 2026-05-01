@@ -5,19 +5,7 @@ import onlineCourses from '../data/onlineCourses'
 
 const BANNER = 'https://viananails.com/wp-content/uploads/2022/09/booking-title-image-1.jpg'
 const ALL = [...presencialCourses, ...onlineCourses]
-const FILTERS = ['Todos', 'Presencial', 'Online', 'Próximos Cursos']
-
-const INFO_PRESENCIAL = [
-  { icon: '👥', title: 'Grupos Reducidos', desc: 'Atención personalizada para cada alumna' },
-  { icon: '🧰', title: 'Kit Incluido', desc: 'Materiales de alta calidad en todos los cursos' },
-  { icon: '📜', title: 'Certificado', desc: 'Diploma acreditativo al finalizar el curso' },
-]
-
-const INFO_ONLINE = [
-  { icon: '💻', title: 'Acceso Inmediato', desc: 'Empieza a aprender en el momento' },
-  { icon: '⏱️', title: 'Sin Límite de Tiempo', desc: 'Estudia a tu ritmo cuando quieras' },
-  { icon: '🌍', title: 'Desde Cualquier Lugar', desc: 'Solo necesitas conexión a internet' },
-]
+const FILTERS = ['Todos', 'Presencial', 'Online', 'Próximos Servicios']
 
 function InfoStrip({ items }) {
   return (
@@ -77,10 +65,10 @@ function ProximosCursosSection() {
   )
 }
 
-export default function Cursos({ onAddToCart, onNavigate, initialFilter = 'Todos' }) {
+export default function Cursos({ onAddToCart, onNavigate, initialFilter = 'Todos', currency = 'EUR' }) {
   const [filter, setFilter] = useState(initialFilter)
 
-  const isProximos = filter === 'Próximos Cursos'
+  const isProximos = filter === 'Próximos Servicios'
 
   const visible = isProximos
     ? []
@@ -100,17 +88,13 @@ export default function Cursos({ onAddToCart, onNavigate, initialFilter = 'Todos
         <div className="absolute inset-0 bg-gradient-to-b from-viana-dark/50 to-viana-dark/80" />
         <div className="relative z-10 pt-36 pb-16 text-center max-w-7xl mx-auto px-4 sm:px-6">
           <p className="font-body text-viana-pink font-medium text-sm uppercase tracking-widest mb-3">Formación profesional</p>
-          <h1 className="font-display text-5xl sm:text-6xl text-white tracking-wide">Cursos</h1>
+          <h1 className="font-display text-5xl sm:text-6xl text-white tracking-wide">Servicios</h1>
           <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-viana-gradient" />
           <p className="mt-5 font-body text-gray-300 max-w-xl mx-auto text-base leading-relaxed">
             Toda nuestra oferta formativa, presencial y online. Encuentra el curso que mejor se adapta a ti.
           </p>
         </div>
       </div>
-
-      {/* Info strip — conditional */}
-      {filter === 'Presencial' && <InfoStrip items={INFO_PRESENCIAL} />}
-      {filter === 'Online' && <InfoStrip items={INFO_ONLINE} />}
 
       {/* Filter tabs */}
       <div className="bg-white border-b border-gray-100 sticky top-[60px] z-40">
@@ -143,7 +127,7 @@ export default function Cursos({ onAddToCart, onNavigate, initialFilter = 'Todos
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {visible.map(course => (
-                <ProductCard key={course.id} product={course} onAddToCart={onAddToCart} />
+                <ProductCard key={course.id} product={course} onAddToCart={onAddToCart} currency={currency} />
               ))}
             </div>
 

@@ -57,7 +57,7 @@ export default function SearchOverlay({ isOpen, onClose, onNavigate }) {
           type="search"
           value={q}
           onChange={e => setQ(e.target.value)}
-          placeholder="Buscar cursos…"
+          placeholder="Buscar servicios…"
           className="flex-1 font-body text-lg text-viana-dark placeholder:text-gray-300 outline-none bg-transparent"
         />
         <button
@@ -93,12 +93,12 @@ export default function SearchOverlay({ isOpen, onClose, onNavigate }) {
           </div>
         ) : results.length === 0 ? (
           <div className="text-center py-16">
-            <p className="font-body text-gray-400">No se encontraron cursos para <strong className="text-viana-dark">"{q}"</strong></p>
+            <p className="font-body text-gray-400">No se encontraron servicios para <strong className="text-viana-dark">"{q}"</strong></p>
             <button
               onClick={() => { onNavigate('cursos'); onClose() }}
               className="mt-4 btn-outline text-sm"
             >
-              Ver todos los cursos
+              Ver todos los servicios
             </button>
           </div>
         ) : (

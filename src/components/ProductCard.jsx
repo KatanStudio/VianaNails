@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import ProductOptionsModal from './ProductOptionsModal'
+import { formatPrice } from '../utils/currency'
 
-function formatPrice(n) {
-  return n % 1 === 0 ? `${n}€` : `${n.toFixed(2).replace('.', ',')}€`
-}
-
-export default function ProductCard({ product, onAddToCart }) {
+export default function ProductCard({ product, onAddToCart, currency = 'EUR' }) {
   const [imgError, setImgError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -66,22 +63,22 @@ export default function ProductCard({ product, onAddToCart }) {
           <div className="mb-4">
             {product.originalPrice ? (
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold gradient-text">{formatPrice(product.priceFrom)}</span>
-                <span className="text-sm font-normal text-gray-400 line-through">{formatPrice(product.originalPrice)}</span>
+                <span className="text-2xl font-bold gradient-text">{formatPrice(product.priceFrom, currency)}</span>
+                <span className="text-sm font-normal text-gray-400 line-through">{formatPrice(product.originalPrice, currency)}</span>
               </div>
             ) : isVariable ? (
               <div>
-                <span className="text-2xl font-bold gradient-text">{formatPrice(product.priceFrom)}</span>
+                <span className="text-2xl font-bold gradient-text">{formatPrice(product.priceFrom, currency)}</span>
                 {product.priceFrom !== product.priceTo && (
-                  <span className="text-sm font-normal text-gray-400 ml-1">– {formatPrice(product.priceTo)}</span>
+                  <span className="text-sm font-normal text-gray-400 ml-1">– {formatPrice(product.priceTo, currency)}</span>
                 )}
               </div>
             ) : product.priceFrom === product.priceTo ? (
-              <span className="text-2xl font-bold gradient-text">{formatPrice(product.priceFrom)}</span>
+              <span className="text-2xl font-bold gradient-text">{formatPrice(product.priceFrom, currency)}</span>
             ) : (
               <span className="text-2xl font-bold gradient-text">
-                {formatPrice(product.priceFrom)}
-                <span className="text-sm font-normal text-gray-400 ml-1">– {formatPrice(product.priceTo)}</span>
+                {formatPrice(product.priceFrom, currency)}
+                <span className="text-sm font-normal text-gray-400 ml-1">– {formatPrice(product.priceTo, currency)}</span>
               </span>
             )}
           </div>
@@ -117,6 +114,7 @@ export default function ProductCard({ product, onAddToCart }) {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onAddToCart={onAddToCart}
+        currency={currency}
       />
     </>
   )

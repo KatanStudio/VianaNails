@@ -45,7 +45,7 @@ export default function FormacionPresencial({ onAddToCart, onNavigate }) {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
-            <h2 className="font-display text-4xl sm:text-5xl text-viana-dark">Nuestros Cursos Presenciales</h2>
+            <h2 className="font-display text-4xl sm:text-5xl text-viana-dark">Nuestros Servicios Presenciales</h2>
             <div className="mt-3 mx-auto w-16 h-1 rounded-full bg-viana-gradient" />
             <p className="mt-4 font-body text-gray-500 max-w-xl mx-auto">
               Clases presenciales en Noez, Toledo. Grupos reducidos para garantizar el mejor aprendizaje.
@@ -75,7 +75,7 @@ export default function FormacionPresencial({ onAddToCart, onNavigate }) {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button onClick={() => onNavigate('proximos')} className="btn-primary">
-            Ver Próximos Cursos
+            Ver Próximos Servicios
           </button>
           <a
             href="https://wa.me/34609338229"
