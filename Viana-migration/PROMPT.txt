@@ -1,0 +1,19 @@
+Actúa como un desarrollador Frontend Senior experto en React, Vite y Tailwind CSS. Estoy migrando un e-commerce desde WordPress. En esta carpeta tienes un directorio llamado 'assets_temporales' con la información de mi marca (brand.txt), mi catálogo (productos.csv) y algunas imágenes.
+
+Tu objetivo es inicializar el proyecto base y dejarlo listo para producción. Ejecuta los comandos necesarios y sigue estos pasos:
+
+Inicialización: Crea aquí mismo un proyecto de React usando Vite (npm create vite@latest . -- --template react) e instala Tailwind CSS junto con sus dependencias.
+
+Configuración de Diseño: Lee el archivo assets_temporales/brand.txt y modifica el tailwind.config.js para añadir mis colores corporativos y tipografías como variables nativas de Tailwind.
+
+Migración de Assets: Mueve el logo.png y las fotos de la carpeta imagenes a la carpeta public/ o src/assets/ del nuevo proyecto.
+
+Maquetación Estructural: Crea una carpeta src/components. Crea un Layout.jsx que incluya un Navbar (con el logo importado y un icono de carrito) y un Footer profesional.
+
+Catálogo: Lee el archivo assets_temporales/productos.csv. No necesito que montes una base de datos real ahora, pero quiero que extraigas la información de 4 o 6 productos principales y crees un archivo src/data/mockProducts.js con esos datos (título, precio, descripción corta, ruta de imagen).
+
+Vista Principal: Crea una Home.jsx con una sección 'Hero' llamativa y un 'ProductGrid' que renderice tarjetas de producto (ProductCard.jsx) usando los datos del paso anterior.
+
+Limpieza: Integra todo en App.jsx, asegúrate de que no haya errores de importación y comprueba que todo compila correctamente.
+
+Trabaja paso a paso, leyendo los archivos cuando lo necesites, y avísame cuando esté listo para que yo pueda ejecutar npm run dev y ver mi nueva web.
