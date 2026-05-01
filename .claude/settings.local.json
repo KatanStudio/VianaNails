@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(json|md|js|jsx|ts|tsx|config\\)$\")",
+      "Bash(grep -E \"^[^/]+\\\\.\\(json|config\\\\..*|md|svg|docx\\)$|^\\\\..*\")",
+      "Bash(grep -E \"^[a-z0-9_\\\\-]+\\(\\\\.config\\\\.js|\\\\.config\\\\.ts|package\\\\.json|tsconfig\\\\.json|README\\\\.md|\\\\.cursorrules\\)$\")"
+    ]
+  }
+}
