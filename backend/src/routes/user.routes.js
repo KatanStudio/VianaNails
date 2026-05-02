@@ -13,6 +13,7 @@ router.get('/me', (req, res, next) => {
 });
 
 router.get('/', requireRole('admin'), userController.getAll);
+router.post('/', requireRole('admin'), userController.create);
 
 router.get('/:id', (req, res, next) => {
   if (req.user.role === 'admin' || req.user.sub === req.params.id) {

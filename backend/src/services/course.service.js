@@ -1,8 +1,8 @@
 import { getCourseModel } from '../models/course.model.js';
 
-export async function findAll(db, { type } = {}) {
+export async function findAll(db, { type, showInactive } = {}) {
   const Course = getCourseModel(db);
-  const query = { isActive: true };
+  const query = showInactive ? {} : { isActive: true };
   if (type) query.type = type;
   return Course.find(query).sort({ order: 1, createdAt: 1 });
 }

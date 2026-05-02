@@ -18,6 +18,15 @@ export async function getById(req, res, next) {
   }
 }
 
+export async function create(req, res, next) {
+  try {
+    const user = await userService.createUser(req.db, req.body);
+    res.status(201).json(user);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export async function update(req, res, next) {
   try {
     const user = await userService.updateUser(req.db, req.params.id, req.body);

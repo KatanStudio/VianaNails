@@ -3,7 +3,8 @@ import * as courseService from '../services/course.service.js';
 export async function getAll(req, res, next) {
   try {
     const { type } = req.query;
-    const courses = await courseService.findAll(req.db, { type });
+    const showInactive = req.user?.role === 'admin';
+    const courses = await courseService.findAll(req.db, { type, showInactive });
     res.json(courses);
   } catch (err) {
     next(err);
