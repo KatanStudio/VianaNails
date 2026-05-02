@@ -1,0 +1,15 @@
+{
+  "colors": {
+    "pink":   "#e24a71",
+    "coral":  "#e66554",
+    "orange": "#f29d56",
+    "gold":   "#f7bc58",
+    "dark":   "#1A1B21",
+    "cream":  "#fdf8f5",
+    "white":  "#ffffff"
+  },
+  "fonts": {
+    "display": "Winterhome",
+    "body":    "Raleway"
+  }
+}

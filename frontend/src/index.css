@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Winterhome debe añadirse como archivo de fuente en src/assets/fonts/
+     Descarga la fuente y descomenta el @font-face:
+  @font-face {
+    font-family: 'Winterhome';
+    src: url('./assets/fonts/Winterhome.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  */
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-body text-viana-dark bg-white antialiased;
+  }
+
+  h1, h2, h3 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-block bg-viana-gradient text-white font-body font-semibold
+           px-6 py-3 rounded-full transition-all duration-200
+           hover:opacity-90 hover:shadow-lg hover:-translate-y-0.5
+           focus:outline-none focus:ring-2 focus:ring-viana-pink focus:ring-offset-2;
+  }
+
+  .btn-outline {
+    @apply inline-block border-2 border-viana-pink text-viana-pink font-body font-semibold
+           px-6 py-3 rounded-full transition-all duration-200
+           hover:bg-viana-pink hover:text-white
+           focus:outline-none focus:ring-2 focus:ring-viana-pink focus:ring-offset-2;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #e24a71 0%, #e66554 50%, #f7bc58 100%);
+  }
+}
