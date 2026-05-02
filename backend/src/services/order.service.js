@@ -1,4 +1,4 @@
-import { getOrderModel } from './order.model.js';
+import { getOrderModel } from '../models/order.model.js';
 
 export async function findAll(db, callerUser) {
   const Order = getOrderModel(db);

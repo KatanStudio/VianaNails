@@ -37,12 +37,14 @@ function FbIcon() {
   )
 }
 
-export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage, currency = 'EUR', onCurrencyChange }) {
+export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage, currency = 'EUR', onCurrencyChange, user, onLogout }) {
   const [scrolled, setScrolled]         = useState(false)
   const [menuOpen, setMenuOpen]         = useState(false)
   const [searchOpen, setSearchOpen]     = useState(false)
   const [currencyOpen, setCurrencyOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const currencyMenuRef = useRef(null)
+  const userMenuRef     = useRef(null)
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20)
@@ -50,7 +52,7 @@ export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage,
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
-  // Close currency dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     if (!currencyOpen) return
     function handleOutside(e) {
@@ -61,6 +63,17 @@ export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage,
     document.addEventListener('mousedown', handleOutside)
     return () => document.removeEventListener('mousedown', handleOutside)
   }, [currencyOpen])
+
+  useEffect(() => {
+    if (!userMenuOpen) return
+    function handleOutside(e) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleOutside)
+    return () => document.removeEventListener('mousedown', handleOutside)
+  }, [userMenuOpen])
 
   function handleNav(page) {
     setMenuOpen(false)
@@ -122,6 +135,40 @@ export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage,
                 {link.label}
               </button>
             ))}
+
+            {/* Separator */}
+            <span className="h-4 w-px bg-gray-200 flex-shrink-0" />
+
+            {/* Auth-dependent links */}
+            {user ? (
+              <>
+                <button
+                  onClick={() => handleNav('mis-cursos')}
+                  className={`text-xs font-body font-semibold uppercase tracking-wide transition-colors duration-200 whitespace-nowrap ${
+                    currentPage === 'mis-cursos' ? 'text-viana-pink' : 'text-viana-dark hover:text-viana-pink'
+                  }`}
+                >
+                  Mis Cursos
+                </button>
+                {user.role === 'admin' && (
+                  <button
+                    onClick={() => handleNav('panel')}
+                    className={`text-xs font-body font-semibold uppercase tracking-wide transition-colors duration-200 whitespace-nowrap ${
+                      currentPage === 'panel' ? 'text-viana-pink' : 'text-viana-dark hover:text-viana-pink'
+                    }`}
+                  >
+                    Panel de Gestión
+                  </button>
+                )}
+              </>
+            ) : (
+              <button
+                onClick={() => handleNav('login')}
+                className="text-xs font-body font-semibold px-4 py-2 rounded-full bg-viana-gradient text-white hover:opacity-90 transition-opacity whitespace-nowrap"
+              >
+                Iniciar sesión
+              </button>
+            )}
           </nav>
 
           {/* RIGHT: Search, User, Cart, Hamburger */}
@@ -174,18 +221,53 @@ export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage,
               )}
             </div>
 
-            {/* User — navigate to login page */}
-            <button
-              onClick={() => handleNav('login')}
-              className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors ${
-                currentPage === 'login' ? 'bg-viana-cream text-viana-pink' : 'text-gray-500 hover:text-viana-pink hover:bg-viana-cream'
-              }`}
-              aria-label="Iniciar sesión"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-              </svg>
-            </button>
+            {/* User */}
+            {user ? (
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setUserMenuOpen(o => !o)}
+                  className="flex items-center gap-1.5 h-9 px-2 rounded-full text-viana-pink bg-viana-cream hover:bg-viana-pink/20 transition-colors"
+                  aria-label="Menú de usuario"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                  </svg>
+                  <span className="hidden sm:block text-xs font-semibold font-body max-w-[80px] truncate">
+                    {user.name.split(' ')[0]}
+                  </span>
+                </button>
+
+                {userMenuOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden">
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <p className="font-body font-semibold text-viana-dark text-sm truncate">{user.name}</p>
+                      <p className="font-body text-xs text-gray-400 truncate">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={() => { setUserMenuOpen(false); onLogout() }}
+                      className="w-full flex items-center gap-2 px-4 py-3 text-sm font-body text-red-500 hover:bg-red-50 transition-colors text-left"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                      </svg>
+                      Cerrar sesión
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={() => handleNav('login')}
+                className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors ${
+                  currentPage === 'login' ? 'bg-viana-cream text-viana-pink' : 'text-gray-500 hover:text-viana-pink hover:bg-viana-cream'
+                }`}
+                aria-label="Iniciar sesión"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+              </button>
+            )}
 
             {/* Cart */}
             <button
@@ -231,25 +313,64 @@ export default function Navbar({ cartCount, onCartOpen, onNavigate, currentPage,
                 {link.label}
               </button>
             ))}
-            <div className="pt-3 border-b border-gray-50 pb-3">
+
+            {/* Auth-dependent links (mobile) */}
+            {user ? (
+              <>
+                <button
+                  onClick={() => handleNav('mis-cursos')}
+                  className={`text-left text-sm font-body font-semibold uppercase tracking-wide transition-colors py-2.5 border-b border-gray-50 ${
+                    currentPage === 'mis-cursos' ? 'text-viana-pink' : 'text-viana-dark hover:text-viana-pink'
+                  }`}
+                >
+                  Mis Cursos
+                </button>
+                {user.role === 'admin' && (
+                  <button
+                    onClick={() => handleNav('panel')}
+                    className={`text-left text-sm font-body font-semibold uppercase tracking-wide transition-colors py-2.5 border-b border-gray-50 ${
+                      currentPage === 'panel' ? 'text-viana-pink' : 'text-viana-dark hover:text-viana-pink'
+                    }`}
+                  >
+                    Panel de Gestión
+                  </button>
+                )}
+              </>
+            ) : (
               <button
                 onClick={() => handleNav('login')}
-                className="flex items-center gap-3 py-2 text-sm font-body font-semibold text-viana-dark hover:text-viana-pink transition-colors"
+                className="text-left text-sm font-body font-semibold uppercase tracking-wide text-viana-dark hover:text-viana-pink transition-colors py-2.5 border-b border-gray-50"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                </svg>
                 Iniciar sesión
               </button>
-              <p className="text-xs font-body text-gray-400 mt-1.5">
-                ¿No tienes cuenta?{' '}
-                <button
-                  onClick={() => handleNav('registro')}
-                  className="text-viana-pink hover:underline font-medium"
-                >
-                  Regístrate aquí
-                </button>
-              </p>
+            )}
+
+            <div className="pt-3 border-b border-gray-50 pb-3">
+              {user ? (
+                <>
+                  <p className="font-body font-semibold text-viana-dark text-sm">{user.name}</p>
+                  <p className="font-body text-xs text-gray-400 mb-2">{user.email}</p>
+                  <button
+                    onClick={() => { setMenuOpen(false); onLogout() }}
+                    className="flex items-center gap-2 py-2 text-sm font-body font-semibold text-red-500 hover:text-red-600 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                    </svg>
+                    Cerrar sesión
+                  </button>
+                </>
+              ) : (
+                <p className="text-xs font-body text-gray-400">
+                  ¿No tienes cuenta?{' '}
+                  <button
+                    onClick={() => handleNav('registro')}
+                    className="text-viana-pink hover:underline font-medium"
+                  >
+                    Regístrate aquí
+                  </button>
+                </p>
+              )}
             </div>
             {/* Currency selector (mobile) */}
             <div className="pt-3 border-t border-gray-50">

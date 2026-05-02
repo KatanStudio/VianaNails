@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import ProductCard from '../components/ProductCard'
-import presencialCourses from '../data/presencialCourses'
-import onlineCourses from '../data/onlineCourses'
+import { useCourses } from '../hooks/useCourses'
 
 const BANNER = 'https://viananails.com/wp-content/uploads/2022/09/booking-title-image-1.jpg'
-const ALL = [...presencialCourses, ...onlineCourses]
 const FILTERS = ['Todos', 'Presencial', 'Online', 'Próximos Servicios']
 
 function InfoStrip({ items }) {
@@ -67,14 +65,15 @@ function ProximosCursosSection() {
 
 export default function Cursos({ onAddToCart, onNavigate, initialFilter = 'Todos', currency = 'EUR' }) {
   const [filter, setFilter] = useState(initialFilter)
+  const { courses, loading, error } = useCourses()
 
   const isProximos = filter === 'Próximos Servicios'
 
   const visible = isProximos
     ? []
     : filter === 'Todos'
-    ? ALL
-    : ALL.filter(p => p.type === filter.toLowerCase())
+    ? courses
+    : courses.filter(p => p.type === filter.toLowerCase())
 
   return (
     <>
@@ -121,13 +120,19 @@ export default function Cursos({ onAddToCart, onNavigate, initialFilter = 'Todos
       ) : (
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <p className="text-center font-body text-sm text-gray-400 mb-8">
-              Mostrando {visible.length} resultado{visible.length !== 1 ? 's' : ''}
-            </p>
+            {loading ? (
+              <p className="text-center font-body text-sm text-gray-400 mb-8">Cargando cursos...</p>
+            ) : error ? (
+              <p className="text-center font-body text-sm text-red-400 mb-8">{error}</p>
+            ) : (
+              <p className="text-center font-body text-sm text-gray-400 mb-8">
+                Mostrando {visible.length} resultado{visible.length !== 1 ? 's' : ''}
+              </p>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {visible.map(course => (
-                <ProductCard key={course.id} product={course} onAddToCart={onAddToCart} currency={currency} />
+                <ProductCard key={course._id} product={course} onAddToCart={onAddToCart} currency={currency} />
               ))}
             </div>
 

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { env } from '../../config/env.js';
-import { getUserModel } from '../users/user.model.js';
+import { env } from '../config/env.js';
+import { getUserModel } from '../models/user.model.js';
 
 function generateAccessToken(user) {
   return jwt.sign(
@@ -18,19 +18,24 @@ function generateRefreshToken(user) {
   );
 }
 
-export async function register(db, data, callerUser) {
+const PASSWORD_POLICY = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/;
+
+function validatePassword(password) {
+  if (!PASSWORD_POLICY.test(password)) {
+    const err = new Error(
+      'La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial'
+    );
+    err.status = 422;
+    throw err;
+  }
+}
+
+export async function register(db, data) {
+  validatePassword(data.password ?? '');
+
   const User = getUserModel(db);
   const userCount = await User.countDocuments();
-
-  if (userCount > 0) {
-    if (!callerUser || callerUser.role !== 'admin') {
-      const err = new Error('Solo un administrador puede registrar nuevos usuarios');
-      err.status = 403;
-      throw err;
-    }
-  }
-
-  const role = userCount === 0 ? 'admin' : (data.role ?? 'cliente');
+  const role = userCount === 0 ? 'admin' : 'cliente';
   const user = await User.create({ ...data, role });
 
   const accessToken = generateAccessToken(user);

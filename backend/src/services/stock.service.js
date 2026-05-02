@@ -1,4 +1,4 @@
-import { getProductModel } from './product.model.js';
+import { getProductModel } from '../models/product.model.js';
 
 export async function findAll(db, filters = {}) {
   const Product = getProductModel(db);

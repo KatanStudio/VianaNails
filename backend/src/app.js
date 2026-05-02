@@ -8,10 +8,11 @@ import { env } from './config/env.js';
 import logger from './utils/logger.js';
 import { tenantMiddleware } from './middlewares/tenant.js';
 
-import authRoutes from './modules/auth/auth.routes.js';
-import userRoutes from './modules/users/user.routes.js';
-import stockRoutes from './modules/stock/stock.routes.js';
-import orderRoutes from './modules/orders/order.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
+import stockRoutes from './routes/stock.routes.js';
+import orderRoutes from './routes/order.routes.js';
+import courseRoutes from './routes/course.routes.js';
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/stock', stockRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/courses', courseRoutes);
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 

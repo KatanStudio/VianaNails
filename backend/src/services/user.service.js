@@ -1,4 +1,4 @@
-import { getUserModel } from './user.model.js';
+import { getUserModel } from '../models/user.model.js';
 
 export async function findAll(db) {
   const User = getUserModel(db);
@@ -18,7 +18,6 @@ export async function findById(db, id) {
 
 export async function updateUser(db, id, data) {
   const User = getUserModel(db);
-  // Nunca permitir actualizar password o tokenVersion por esta ruta
   const { password, tokenVersion, ...safeData } = data;
 
   const user = await User.findByIdAndUpdate(id, safeData, {

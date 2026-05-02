@@ -1,4 +1,4 @@
-import * as authService from './auth.service.js';
+import * as authService from '../services/auth.service.js';
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -9,7 +9,7 @@ const COOKIE_OPTIONS = {
 
 export async function register(req, res, next) {
   try {
-    const { user, accessToken } = await authService.register(req.db, req.body, req.user ?? null);
+    const { user, accessToken } = await authService.register(req.db, req.body);
     res.status(201).json({ accessToken, user });
   } catch (err) {
     next(err);

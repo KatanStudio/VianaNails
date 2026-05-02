@@ -1,7 +1,7 @@
 import Navbar from './Navbar'
 import Footer from './Footer'
 
-export default function Layout({ children, cartCount, onCartOpen, onNavigate, currentPage, currency, onCurrencyChange }) {
+export default function Layout({ children, cartCount, onCartOpen, onNavigate, currentPage, currency, onCurrencyChange, user, onLogout }) {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar
@@ -11,6 +11,8 @@ export default function Layout({ children, cartCount, onCartOpen, onNavigate, cu
         currentPage={currentPage}
         currency={currency}
         onCurrencyChange={onCurrencyChange}
+        user={user}
+        onLogout={onLogout}
       />
       <main className="flex-1 pt-0">
         {children}

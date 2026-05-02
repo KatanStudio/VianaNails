@@ -1,4 +1,4 @@
-import * as stockService from './stock.service.js';
+import * as stockService from '../services/stock.service.js';
 
 export async function getAll(req, res, next) {
   try {

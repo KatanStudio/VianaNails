@@ -1,10 +1,13 @@
 import { useState } from 'react'
+import { useAuth } from '../context/AuthContext'
 
 const BANNER = 'https://viananails.com/wp-content/uploads/2022/09/booking-title-image-1.jpg'
 
 export default function Login({ onNavigate }) {
+  const { login } = useAuth()
   const [form, setForm]       = useState({ email: '', password: '' })
   const [errors, setErrors]   = useState({})
+  const [serverError, setServerError] = useState(null)
   const [loading, setLoading] = useState(false)
 
   function validate() {
@@ -18,15 +21,24 @@ export default function Login({ onNavigate }) {
   function handleChange(field, value) {
     setForm(f => ({ ...f, [field]: value }))
     setErrors(e => ({ ...e, [field]: undefined }))
+    setServerError(null)
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
+
     setLoading(true)
-    // TODO: Integrate authentication here
-    setTimeout(() => setLoading(false), 1200)
+    setServerError(null)
+    try {
+      await login(form.email, form.password)
+      onNavigate('home')
+    } catch (err) {
+      setServerError(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -51,6 +63,12 @@ export default function Login({ onNavigate }) {
         <div className="max-w-md mx-auto px-4 sm:px-6">
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <h2 className="font-display text-2xl text-viana-dark mb-6 text-center">Accede a tu cuenta</h2>
+
+            {serverError && (
+              <div className="mb-5 px-4 py-3 bg-red-50 border border-red-200 rounded-xl">
+                <p className="font-body text-sm text-red-600">{serverError}</p>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} noValidate className="space-y-5">
               <div>
@@ -79,17 +97,6 @@ export default function Login({ onNavigate }) {
                 {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
               </div>
 
-              <div className="flex justify-end">
-                <a
-                  href="https://viananails.com/mi-cuenta/lost-password/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-body text-xs text-gray-400 hover:text-viana-pink transition-colors"
-                >
-                  ¿Olvidaste tu contraseña?
-                </a>
-              </div>
-
               <button
                 type="submit"
                 disabled={loading}
@@ -99,7 +106,6 @@ export default function Login({ onNavigate }) {
               </button>
             </form>
 
-            {/* Register link */}
             <div className="mt-6 pt-6 border-t border-gray-100 text-center">
               <p className="font-body text-sm text-gray-500">
                 ¿No tienes cuenta?{' '}

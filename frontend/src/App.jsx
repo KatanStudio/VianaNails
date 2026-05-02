@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AuthProvider, useAuth } from './context/AuthContext'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Checkout from './pages/Checkout'
@@ -7,11 +8,14 @@ import Galeria from './pages/Galeria'
 import Registro from './pages/Registro'
 import Login from './pages/Login'
 import Contacto from './pages/Contacto'
+import MisCursos from './pages/MisCursos'
+import PanelGestion from './pages/PanelGestion'
 import CartModal from './components/CartModal'
 
 const CURSOS_FILTER = { formacion: 'Presencial', academia: 'Online', proximos: 'Próximos Servicios' }
 
-export default function App() {
+function AppInner() {
+  const { user, logout } = useAuth()
   const [cartItems, setCartItems] = useState([])
   const [cartOpen, setCartOpen] = useState(false)
   const [page, setPage] = useState('home')
@@ -31,9 +35,9 @@ export default function App() {
 
   function addToCart(product) {
     setCartItems(prev => {
-      const existing = prev.find(i => i.id === product.id)
+      const existing = prev.find(i => i._id === product._id)
       if (existing) {
-        return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i)
+        return prev.map(i => i._id === product._id ? { ...i, qty: i.qty + 1 } : i)
       }
       return [...prev, { ...product, qty: 1 }]
     })
@@ -41,12 +45,17 @@ export default function App() {
   }
 
   function removeFromCart(id) {
-    setCartItems(prev => prev.filter(i => i.id !== id))
+    setCartItems(prev => prev.filter(i => i._id !== id))
   }
 
   function updateQty(id, qty) {
     if (qty < 1) return removeFromCart(id)
-    setCartItems(prev => prev.map(i => i.id === id ? { ...i, qty } : i))
+    setCartItems(prev => prev.map(i => i._id === id ? { ...i, qty } : i))
+  }
+
+  async function handleLogout() {
+    await logout()
+    navigate('home')
   }
 
   const cartCount = cartItems.reduce((sum, i) => sum + i.qty, 0)
@@ -60,6 +69,8 @@ export default function App() {
         currentPage={page}
         currency={currency}
         onCurrencyChange={setCurrency}
+        user={user}
+        onLogout={handleLogout}
       >
         {page === 'home' && <Home onAddToCart={addToCart} onNavigate={navigate} />}
         {page === 'cursos' && <Cursos key={cursosFilter} onAddToCart={addToCart} onNavigate={navigate} initialFilter={cursosFilter} currency={currency} />}
@@ -68,6 +79,8 @@ export default function App() {
         {page === 'registro' && <Registro onNavigate={navigate} />}
         {page === 'contacto' && <Contacto onNavigate={navigate} />}
         {page === 'checkout' && <Checkout cartItems={cartItems} onNavigate={navigate} />}
+        {page === 'mis-cursos' && <MisCursos onNavigate={navigate} />}
+        {page === 'panel' && <PanelGestion onNavigate={navigate} />}
       </Layout>
 
       <CartModal
@@ -81,5 +94,13 @@ export default function App() {
         currency={currency}
       />
     </>
+  )
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppInner />
+    </AuthProvider>
   )
 }

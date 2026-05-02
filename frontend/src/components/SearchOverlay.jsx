@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import presencialCourses from '../data/presencialCourses'
-import onlineCourses from '../data/onlineCourses'
-
-const ALL = [...presencialCourses, ...onlineCourses]
+import { useCourses } from '../hooks/useCourses'
 
 function formatPrice(n) {
   return n % 1 === 0 ? `${n}€` : `${n.toFixed(2).replace('.', ',')}€`
@@ -11,9 +8,10 @@ function formatPrice(n) {
 export default function SearchOverlay({ isOpen, onClose, onNavigate }) {
   const [q, setQ] = useState('')
   const inputRef = useRef(null)
+  const { courses } = useCourses()
 
   const results = q.trim().length >= 2
-    ? ALL.filter(p =>
+    ? courses.filter(p =>
         p.name.toLowerCase().includes(q.toLowerCase()) ||
         (p.shortDesc && p.shortDesc.toLowerCase().includes(q.toLowerCase()))
       )
@@ -116,7 +114,7 @@ export default function SearchOverlay({ isOpen, onClose, onNavigate }) {
             </p>
             <ul className="space-y-2">
               {results.map(product => (
-                <li key={product.id}>
+                <li key={product._id}>
                   <button
                     onClick={() => handleResultClick(product)}
                     className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-viana-cream transition-colors text-left group"

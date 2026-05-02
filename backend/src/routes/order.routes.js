@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { authenticate } from '../../middlewares/auth.js';
-import { requireRole } from '../../middlewares/roles.js';
-import * as orderController from './order.controller.js';
+import { authenticate } from '../middlewares/auth.js';
+import { requireRole } from '../middlewares/roles.js';
+import * as orderController from '../controllers/order.controller.js';
 
 const router = Router();
 
